@@ -1,6 +1,7 @@
 using UnityEngine;
 
 
+[RequireComponent(typeof(Rigidbody))]
 public class JMBMovementManager : JMonoBehaviour
 {
 
@@ -24,16 +25,40 @@ public class JMBMovementManager : JMonoBehaviour
      */
     protected float currentMovementSpeed;
     
+    protected Vector3 divertingMovementVelocity;
+    
+    protected Vector3 currentMovementVelocity;
+
+    private Rigidbody rigidbodyComponent;
+    
     
     public override void OnConstructed()
     {
         base.OnConstructed();
         
+        rigidbodyComponent = GetComponent<Rigidbody>();
+        
         doTickUpdate = true;
 
         currentMovementSpeed = 0;
     }
-    
-    
+
+    public override void Tick(float deltaTime)
+    {
+        base.Tick(deltaTime);
+        
+        divertingMovementVelocity = divertingMovementVelocity.normalized * maximumMovementSpeed;
+
+        currentMovementVelocity += (divertingMovementVelocity - currentMovementVelocity).normalized * movementAcceleration * deltaTime;
+
+        rigidbodyComponent.linearVelocity = currentMovementVelocity;
+        
+        divertingMovementVelocity = Vector3.zero;
+    }
+
+    public void InputMovementDirection(Vector3 movementDirection)
+    {
+        divertingMovementVelocity += movementDirection;
+    }
     
 }
