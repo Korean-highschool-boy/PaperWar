@@ -55,7 +55,7 @@ public class JMonoBehaviour : MonoBehaviour
     
     private void Update()
     {
-        if (doTickUpdate) return;
+        if (!doTickUpdate) return;
         
         Tick(Time.deltaTime);
     }
