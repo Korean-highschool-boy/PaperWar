@@ -13,6 +13,11 @@ public class JMonoBehaviour : MonoBehaviour
         JLog("OnConstructed");
     }
 
+    public virtual void OnDestructed()
+    {
+        JLog("OnDestructed");
+    }
+
     public virtual void Initialize()
     {
         JLog("Initialize");
@@ -67,5 +72,6 @@ public class JMonoBehaviour : MonoBehaviour
 
     private void OnDestroy()
     {
+        OnDestructed();
     }
 }
